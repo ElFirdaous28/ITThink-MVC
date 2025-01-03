@@ -2,17 +2,23 @@
 require_once(__DIR__ . '/../models/User.php');
 require_once(__DIR__ . '/../models/Project.php');
 require_once(__DIR__ . '/../models/Testimonials.php');
-
+require_once(__DIR__ . '/../models/Category.php');
+require_once(__DIR__ . '/../models/SubCategory.php');
 class AdminController extends BaseController
 {
    private $UserModel;
    private $ProjectModel;
    private $TestimonialModel;
+   private $CategoryModel;
+   private $SubCategoryModel;
+
    public function __construct()
    {
       $this->UserModel = new User();
       $this->ProjectModel = new Project();
       $this->TestimonialModel = new Testimonials();
+      $this->CategoryModel = new Category();
+      $this->SubCategoryModel = new SubCategory();
    }
 
    public function index()
@@ -26,11 +32,6 @@ class AdminController extends BaseController
       $this->renderDashboard('admin/index', ["statistics" => $statistics]);
    }
 
-   public function categories()
-   {
-
-      $this->renderDashboard('admin/categories');
-   }
    // =========================================================== users methods ===========================================
    public function handleUsers()
    {
@@ -94,14 +95,89 @@ class AdminController extends BaseController
       $testimonials = $this->TestimonialModel->allTestimonials();
       $this->renderDashboard('admin/testimonials', ["testimonials" => $testimonials]);
    }
-   
+
    // remove testimonial
-   public function removeTestimonial(){
+   public function removeTestimonial()
+   {
       if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['remove_testimonial'])) {
          $idtesTimonial = $_POST['id_temoignage'];
          $this->TestimonialModel->removeTestimonial($idtesTimonial);
          header("Location: /admin/testimonials");
          exit();
+      }
+   }
+
+   // =========================================================== categories methods ===========================================
+   public function categories()
+   {
+      $categories = $this->CategoryModel->getCategoriesWithSubcategories();
+      $this->renderDashboard('admin/categories', ["categories" => $categories]);
+   }
+
+   // add or modify category code
+   public function addModifyCategory()
+   {
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+         if (isset($_POST["add_modify_category"])) {
+            $category_name = trim($_POST["category_name_input"]);
+            $category_id = isset($_POST["category_id_input"]) ? trim($_POST["category_id_input"]) : '';
+
+            if (!empty($category_name)) {
+               if ($category_id == 0) {
+                  $this->CategoryModel->creatCategory($category_name);
+               }
+               // modify category if id gived
+               else {
+                  $this->CategoryModel->modifyCategory($category_name, $category_id);
+               }
+               header("Location: /admin/categories");
+            }
+         }
+      }
+   }
+
+   // delete category methode
+   public function deleteCategory()
+   {
+      if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_categorie"])) {
+         $id_categorie = $_POST['id_categorie'];
+         $this->CategoryModel->deleteCategory($id_categorie);
+         header("Location: /admin/categories");
+      }
+   }
+
+   // add modify sub category
+   public function addModifySubCategory()
+   {
+      // add or modify subcategory code
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+         if (isset($_POST["add_modify_subcategory"])) {
+            $subcategory_name = trim($_POST["subcategory_name_input"]);
+            $category_id = $_POST["category_parent_id_input"];
+            $subcategory_id = (int)trim($_POST["subcategory_id_input"]);
+
+
+            if (!empty($subcategory_name)) {
+               // create a new subcategory if id not gived
+               if ($subcategory_id == 0) {
+                  $this->SubCategoryModel->createSubCategory($subcategory_name,$category_id);
+               }
+               // modify subcategory if id gived
+               else {
+                  $this->SubCategoryModel->modifySubCategory($subcategory_name, $subcategory_id);
+               }
+               header("Location: /admin/categories");
+            }
+         }
+      }
+   }
+
+   // delete sb category
+   public function deleteSubCategory(){
+      if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST["delete_sub_category"])) {
+         $id_sous_categorie=$_POST['id_sub_categorie'];
+         $this->SubCategoryModel->deleteCategory($id_sous_categorie);
+         header("Location: /admin/categories");
      }
    }
 }
