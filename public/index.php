@@ -34,6 +34,12 @@ Route::post('/admin/users/changeUserStatus', [AdminController::class, 'changeUse
 Route::post('/admin/users/removeUser', [AdminController::class, 'removeUser']);
 
 Route::get('/admin/categories', [AdminController::class, 'categories']);
+Route::post('/admin/categories/addModifyCategory', [AdminController::class, 'addModifyCategory']);
+Route::post('/admin/categories/deleteCategory', [AdminController::class, 'deleteCategory']);
+Route::post('/admin/categories/addModifySubCategory', [AdminController::class, 'addModifySubCategory']);
+Route::post('/admin/categories/deleteSubCategory', [AdminController::class, 'deleteSubCategory']);
+
+
 Route::get('/admin/testimonials', [AdminController::class, 'testimonials']);
 Route::post('/admin/testimonials/removeTestimonial', [AdminController::class, 'removeTestimonial']);
 
