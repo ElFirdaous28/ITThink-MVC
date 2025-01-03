@@ -32,9 +32,13 @@ Route::get('/admin/dashboard', [AdminController::class, 'index']);
 Route::get('/admin/users', [AdminController::class, 'handleUsers']);
 Route::post('/admin/users/changeUserStatus', [AdminController::class, 'changeUserStatus']);
 Route::post('/admin/users/removeUser', [AdminController::class, 'removeUser']);
+
 Route::get('/admin/categories', [AdminController::class, 'categories']);
 Route::get('/admin/testimonials', [AdminController::class, 'testimonials']);
-Route::get('/admin/projects', [AdminController::class, 'projects']);
+Route::post('/admin/testimonials/removeTestimonial', [AdminController::class, 'removeTestimonial']);
+
+Route::get('/admin/projects', [AdminController::class, 'Allprojects']);
+Route::post('/admin/projects/removeProject', [AdminController::class, 'removeProject']);
 
 
 
