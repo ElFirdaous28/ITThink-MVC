@@ -60,6 +60,43 @@ class Project extends Db
         return $projects;
     }
 
+    // creat project method
+    public function createProject($project_title,$project_description,$project_category,$project_subcategory){
+        try {
+            $addProjectQuery = $this->conn->prepare("INSERT INTO projets (titre_projet, description, id_categorie, id_sous_categorie, id_utilisateur) 
+                                            VALUES (:project_title, :project_description, :project_category, :project_subcategory, :user_id)");
+            $addProjectQuery->execute([
+                ':project_title' => $project_title,
+                ':project_description' => $project_description,
+                ':project_category' => $project_category,
+                ':project_subcategory' => $project_subcategory,
+                ':user_id' => $_SESSION['user_loged_in_id']  // Use the logged-in user's ID
+            ]);
+        } catch (PDOException $e) {
+            echo "Database Error: " . $e->getMessage();
+        }
+    }
+
+    // update project
+    public function updateProject($project_title,$project_description,$project_category,$project_subcategory,$project_status,$project_id){
+        try {
+            $modifyProjectQuery = $this->conn->prepare("UPDATE projets SET titre_projet = ?, description = ?, id_categorie = ?, id_sous_categorie = ?,project_status=?
+                                                WHERE id_projet = ?");
+            $modifyProjectQuery->execute([
+                $project_title, 
+                $project_description, 
+                $project_category, 
+                $project_subcategory,
+                $project_status,
+                $project_id
+            ]);
+            echo "Project updated successfully!";
+            header("Location: ../../Client/my_projects.php");
+        } catch (PDOException $e) {
+            echo "Database Error: " . $e->getMessage();
+        }
+    }
+
     // methode to delet a project
     function removeProject($idProject){
         try{

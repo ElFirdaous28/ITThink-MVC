@@ -9,6 +9,7 @@ require_once '../core/Route.php';
 require_once '../app/controllers/HomeController.php';
 require_once '../app/controllers/AuthController.php';
 require_once '../app/controllers/AdminController.php';
+require_once '../app/controllers/ClientController.php';
 require_once '../app/config/db.php';
 
 
@@ -27,7 +28,6 @@ Route::post('/login', [AuthController::class, 'handleLogin']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 // admin routers
-
 Route::get('/admin/dashboard', [AdminController::class, 'index']);
 Route::get('/admin/users', [AdminController::class, 'handleUsers']);
 Route::post('/admin/users/changeUserStatus', [AdminController::class, 'changeUserStatus']);
@@ -45,6 +45,24 @@ Route::post('/admin/testimonials/removeTestimonial', [AdminController::class, 'r
 
 Route::get('/admin/projects', [AdminController::class, 'Allprojects']);
 Route::post('/admin/projects/removeProject', [AdminController::class, 'removeProject']);
+
+// client routers
+Route::get('/client/dashboard', [AdminController::class, 'index']);
+
+Route::get('/client/projects', [ClientController::class, 'myprojects']);
+Route::post('/client/projects/removeProject', [ClientController::class, 'removeProject']);
+Route::post('/client/projects/addModifyProject', [ClientController::class, 'addModifyProject']);
+
+Route::get('/client/offers', [ClientController::class, 'clientOffers']);
+Route::post('/client/offers/acceptOffre', [ClientController::class, 'acceptOffre']);
+Route::post('/client/offers/addModifyTestimonial', [ClientController::class, 'addModifyTestimonial']);
+
+Route::get('/client/testimonials', [ClientController::class, 'testimonials']);
+Route::post('/client/testimonials/removeTestimonial', [ClientController::class, 'removeTestimonial']);
+
+
+// freelancer routers
+Route::get('/freelancer/dashboard', [AdminController::class, 'index']);
 
 
 
