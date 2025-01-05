@@ -8,6 +8,16 @@ class SubCategory extends Db
         parent::__construct();
     }
 
+    // show all sub categories
+    function showSubCategories() {
+        $subCategoriesQuery = $this->conn->prepare("SELECT * FROM sous_categories");
+        $subCategoriesQuery->execute([]);
+            
+        // Fetch and return results
+        $subcategories = $subCategoriesQuery->fetchAll(PDO::FETCH_ASSOC);
+        return $subcategories;
+    }
+
     // creat subcategory method
     public function createSubCategory($subcategory_name,$category_id){
         try {

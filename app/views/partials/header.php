@@ -17,7 +17,19 @@
     
     <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
         <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
-    <?php require_once(__DIR__.'/../partials/sidebar.php');?>
+    <?php
+        if(isset($_SESSION['user_loged_in_role'])){
+            if($_SESSION['user_loged_in_role']==1){
+                require_once(__DIR__.'/../partials/sidebar.php');
+            }
+            else if($_SESSION['user_loged_in_role']==2){
+                require_once(__DIR__.'/../partials/clientSideBar.php');
+            }
+            else if($_SESSION['user_loged_in_role']==3){
+                require_once(__DIR__.'/../partials/freelancerSideBar.php');
+            }    
+        }
+    ?>
 
           
     <div class="flex flex-col flex-1 overflow-hidden">
