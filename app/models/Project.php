@@ -97,7 +97,7 @@ class Project extends Db
         }
     }
 
-    // methode to delet a project
+    // methode to delete a project
     function removeProject($idProject){
         try{
             $deleteProject = $this->conn->prepare("DELETE FROM projets WHERE id_projet=?");
@@ -108,4 +108,14 @@ class Project extends Db
         }
     }
     
+    // metjode to get project applied for by a freelancer
+    function getAppliedProjects() {
+        $user_id = $_SESSION['user_loged_in_id'];
+
+        $query = $this->conn->prepare("SELECT id_projet FROM offres WHERE id_utilisateur = ?");
+        $query->execute([$user_id]);
+        $appliedProjects = $query->fetchAll(PDO::FETCH_COLUMN);
+
+        return $appliedProjects; // Return project IDs as an array
+    }
 }

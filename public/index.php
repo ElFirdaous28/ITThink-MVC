@@ -10,6 +10,7 @@ require_once '../app/controllers/HomeController.php';
 require_once '../app/controllers/AuthController.php';
 require_once '../app/controllers/AdminController.php';
 require_once '../app/controllers/ClientController.php';
+require_once '../app/controllers/FreelancerController.php';
 require_once '../app/config/db.php';
 
 
@@ -63,6 +64,13 @@ Route::post('/client/testimonials/removeTestimonial', [ClientController::class, 
 
 // freelancer routers
 Route::get('/freelancer/dashboard', [AdminController::class, 'index']);
+Route::get('/freelancer/projects', [FreelancerController::class, 'Allprojects']);
+
+Route::post('/freelancer/projects/submitOffer', [FreelancerController::class, 'addModifyOffer']);
+Route::get('/freelancer/offers', [FreelancerController::class, 'freelancerOffers']);
+Route::post('/freelancer/deleteOffer', [FreelancerController::class, 'deleteOffer']);
+
+Route::get('/freelancer/testimonials', [FreelancerController::class, 'testimonials']);
 
 
 
